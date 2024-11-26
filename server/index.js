@@ -54,6 +54,7 @@ socketIo.on('connection', (socket) => {
     });
 })
 
+// Handle user registeration
 app.post("/register", (req, res) => {
     const { name, email, password, status } = req.body;
 
@@ -71,6 +72,7 @@ app.post("/register", (req, res) => {
     });
 });
 
+// Handle user login
 app.post("/login", (req, res) => {
     const { email, password } = req.body;
     const sql = "SELECT * FROM users WHERE email = ?";
@@ -109,6 +111,7 @@ app.post("/login", (req, res) => {
     })
 })
 
+// Handle users insert message
 app.post('/messages', (req, res) => {
     const { message, sender_id, receiver_id, time } = req.body;
 
@@ -126,26 +129,7 @@ app.post('/messages', (req, res) => {
     })
 })
 
-// app.get('/list-messages', (req, res) => {
-//     const sqlMessage = "SELECT * FROM messages";
-//     const sqlUser = "SELECT * FROM users";
-
-//     conn.query(sqlMessage, (err, messageResult) => {
-//         if (err) return res.status(500).send({ message: "Internal server problem" })
-
-//         conn.query(sqlUser, (err, userResult) => {
-//             if (err) {
-//                 return res.status(500).send({ message: "Internal server problem" });
-//             }
-//             res.json({
-//                 message: "Record display succssfully",
-//                 messages: messageResult,
-//                 users: userResult
-//             })
-//         })
-//     })
-// })
-
+// Handle users list message
 app.get('/list-message/:id', (req, res) => {
     const id = req.params.id;
     const sqlMessage = "SELECT * FROM messages WHERE sender_id = ? or receiver_id = ?";
@@ -158,6 +142,7 @@ app.get('/list-message/:id', (req, res) => {
     })
 })
 
+// Handle fetch login user information 
 app.get('/login-users', (req, res) => {
     sql = "SELECT * FROM users";
     conn.query(sql, (err, result) => {
@@ -171,6 +156,7 @@ app.get('/login-users', (req, res) => {
     })
 })
 
+// Handle user disconnection
 app.post('/disconnect-user', (req, res) => {
     const { user_id } = req.body;
     const sql = "UPDATE users SET status = 0 WHERE id = ?"
